@@ -1,19 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package csv;
 
-/**
- *
- * @author bass0n
- */
 public class Person {
     private String firstName, lastName, companyName, address, city, province, postal, phone1, phone2, email, web;
 
     public Person() {
+    }
+    
+    //adding constructor with all the parameters to create new person, should be useful
+    public Person(String firstName, String lastName, String companyName, String address, String city, String province, String postal, String phone1, String phone2, String email, String web) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.companyName = companyName;
+        this.address = address;
+        this.city = city;
+        this.province = province;
+        this.postal = postal;
+        this.phone1 = phone1;
+        this.phone2 = phone2;
+        this.email = email;
+        this.web = web;
     }
 
     public String getFirstName() {
@@ -118,6 +123,14 @@ public class Person {
             return true;
             else
             return false;
-        
+    }
+
+    
+    @Override
+    //overriding toString for the specific purpose that I don't really get at the moment
+    
+    public String toString() {
+        return firstName + "," + lastName + "," + companyName + "," + address + "," + city + ","
+                + province + "," + postal + "," + phone1 + "," + phone2 + "," + email + "," + web;
     }
 }
