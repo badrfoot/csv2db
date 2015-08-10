@@ -1,13 +1,15 @@
 package csv;
 
 public class Person {
+
     private String firstName, lastName, companyName, address, city, province, postal, phone1, phone2, email, web;
 
     public Person() {
     }
-    
+
     //adding constructor with all the parameters to create new person, should be useful
-    public Person(String firstName, String lastName, String companyName, String address, String city, String province, String postal, String phone1, String phone2, String email, String web) {
+    public Person(String firstName, String lastName, String companyName, String address, String city, String province,
+            String postal, String phone1, String phone2, String email, String web) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.companyName = companyName;
@@ -108,29 +110,53 @@ public class Person {
     public void setWeb(String web) {
         this.web = web;
     }
-    
-    public boolean equals(Person o){
-        if(!(o instanceof Person))
+
+    public boolean equals(Person o) {
+        if (!(o instanceof Person)) {
             return false;
-        if (this==o)
+        }
+        if (this == o) {
             return true;
-        
-        if(firstName.equals(o.getFirstName()) && lastName.equals(o.getLastName()) &&
-                companyName.equals(o.getCompanyName()) && address.equals(o.getAddress()) &&
-                city.equals(o.getCity()) && province.equals(o.getProvince()) &&
-                postal.equals(o.getPostal()) && phone1.equals(o.getPhone1()) &&
-                phone2.equals(o.getPhone2()) && email.equals(o.getEmail()) && web.equals(o.getWeb()))
+        }
+
+        if (firstName.equals(o.getFirstName()) && lastName.equals(o.getLastName())
+                && companyName.equals(o.getCompanyName()) && address.equals(o.getAddress())
+                && city.equals(o.getCity()) && province.equals(o.getProvince())
+                && postal.equals(o.getPostal()) && phone1.equals(o.getPhone1())
+                && phone2.equals(o.getPhone2()) && email.equals(o.getEmail()) && web.equals(o.getWeb())) {
             return true;
-            else
+        } else {
             return false;
+        }
     }
 
-    
     @Override
     //overriding toString for the specific purpose that I don't really get at the moment
-    
+
     public String toString() {
         return firstName + "," + lastName + "," + companyName + "," + address + "," + city + ","
                 + province + "," + postal + "," + phone1 + "," + phone2 + "," + email + "," + web;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Person)) // ignore null or non-Person obj
+        {
+            return false;
+        }
+        if (this == o) // ignore itself
+        {
+            return true;
+        }
+        // compare all member fields if they are equals
+        Person p = (Person) o;
+        if (firstName.equals(p.getFirstName()) && lastName.equals(p.getLastName())
+                && companyName.equals(p.getLastName()) && address.equals(p.getLastName()) && city.equals(p.getLastName())
+                && province.equals(p.getLastName()) && postal.equals(p.getLastName()) && phone1.equals(p.getLastName())
+                && phone2.equals(p.getLastName()) && email.equals(p.getLastName()) && web.equals(p.getLastName())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
