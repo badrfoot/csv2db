@@ -1,16 +1,26 @@
 package csv;
 
+import ejd.JdbcHelper;
 import java.io.*;
 import java.util.*;
-/*import java.util.logging.*;
-import javax.servlet.annotation.*;*/
-
 
 public class Csv2Database {
-    
-    ArrayList<Person> parsedPersons;
-    ArrayList<Person> addedPersons;
-    public ArrayList<Person> readCsv(InputStream is) throws IOException{
+
+    private ArrayList<Person> parsedPersons;
+    private ArrayList<Person> addedPersons;
+    JdbcHelper jdbc;
+
+    public Csv2Database() {
+        parsedPersons = new ArrayList<Person>();
+        addedPersons = new ArrayList<Person>();
+        jdbc = new JdbcHelper();
+    }
+
+    public ArrayList<Person> readCsv(InputStream is) throws IOException {
         return parsedPersons;
+    }
+
+    public ArrayList<Person> addPersons(ArrayList<Person> persons) throws IOException {
+        return addedPersons;
     }
 }
