@@ -17,6 +17,14 @@ public class Csv2Database {
     }
 
     public ArrayList<Person> readCsv(InputStream is) throws IOException {
+        BufferedInputStream bis = new BufferedInputStream(is);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(bis));
+        String line;
+            while((line = reader.readLine()) != null)
+            {
+                //TODO parse string to Person
+                parsedPersons.add(Person.toPerson(line));
+            }
         return parsedPersons;
     }
 

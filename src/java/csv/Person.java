@@ -130,14 +130,14 @@ public class Person {
         }
     }
 
-    @Override
-    //overriding toString for the specific purpose that I don't really get at the moment
-
-    public String toString() {
-        return firstName + "," + lastName + "," + companyName + "," + address + "," + city + ","
-                + province + "," + postal + "," + phone1 + "," + phone2 + "," + email + "," + web;
+    public static Person toPerson(String s){
+        Person p = null;
+        String[] tokens = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+        for(String t : tokens) {
+            p.add(t);
+        }
+        return p;
     }
-
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Person)) // ignore null or non-Person obj
@@ -158,5 +158,9 @@ public class Person {
         } else {
             return false;
         }
+    }
+
+    private void add(String t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
