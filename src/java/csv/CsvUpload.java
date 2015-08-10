@@ -33,14 +33,8 @@ public class CsvUpload extends HttpServlet {
             // get the file from request and create a file reader
             filePart = request.getPart("file");
             fileStream = filePart.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(fileStream));
-
-            // parse each line and store to an array
-            String line;
-            while((line = reader.readLine()) != null)
-            {
-                lines.add(line);
-            }
+            
+            Csv2Database.readCsv(fileStream);
         }
         catch(Exception e)
         {

@@ -130,7 +130,7 @@ public class Person {
         }
     }
 
-    public static Person toPerson(String s){
+    public Person toPerson(String s){
         Person p = null;
         String[] tokens = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
         for(String t : tokens) {
