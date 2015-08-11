@@ -34,7 +34,9 @@ public class CsvUpload extends HttpServlet {
             filePart = request.getPart("file");
             fileStream = filePart.getInputStream();
             
-            Csv2Database.readCsv(fileStream);
+            Csv2Database db = new Csv2Database();
+            
+            db.readCsv(fileStream);
         }
         catch(Exception e)
         {

@@ -23,7 +23,8 @@ public class Csv2Database {
             String line;
             while((line = reader.readLine()) != null)
             {
-                parsedPersons.add(Person.toPerson(line));
+                Person a = null;
+                parsedPersons.add(a.toPerson(line));
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
