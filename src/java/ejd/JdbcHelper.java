@@ -10,12 +10,7 @@
 
 package ejd;
 
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -36,7 +31,31 @@ public class JdbcHelper
     ///////////////////////////////////////////////////////////////////////////
     // connect to a database and create a statement object
     ///////////////////////////////////////////////////////////////////////////
-    public void connect(String url, String user, String pass)
+    
+    
+    public boolean connect(String url, String user, String password) {
+        try {
+            errorMessage = "";
+
+            // getConnection() requires 3 params: URL, user and password.
+            // DriverManager will load the JDBC driver automatically based on URL.
+            // NOTE: Tomcat requires Class.forName() to load driver properly
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(url, user, password);
+
+        } catch (SQLException e) {
+            errorMessage = e.getSQLState() + ": " + e.getMessage();
+            System.err.println(errorMessage);
+            return false;
+        } catch (Exception e) {
+            errorMessage = e.getMessage();
+            System.err.println(errorMessage);
+            return false;
+        }        
+        return true;
+    }
+    //commented for connection test
+    /*public void connect(String url, String user, String pass)
     {
         try
         {
@@ -61,7 +80,7 @@ public class JdbcHelper
             errorMessage = e.getMessage();
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 

@@ -113,57 +113,36 @@ public class Person {
         this.web = web;
     }
 
-    public boolean equals(Person o) {
-        if (!(o instanceof Person)) {
+    public boolean equals(Object o) {
+        Person p = null;
+        if (o instanceof Person) {
+            p = (Person)o;
+        }else
             return false;
-        }
+        
         if (this == o) {
             return true;
         }
 
-        if (firstName.equals(o.getFirstName()) && lastName.equals(o.getLastName())
-                && companyName.equals(o.getCompanyName()) && address.equals(o.getAddress())
-                && city.equals(o.getCity()) && province.equals(o.getProvince())
-                && postal.equals(o.getPostal()) && phone1.equals(o.getPhone1())
-                && phone2.equals(o.getPhone2()) && email.equals(o.getEmail()) && web.equals(o.getWeb())) {
-            return true;
-        } else {
-            return false;
-        }
+        return (this.firstName.equals(p.getFirstName()) && this.lastName.equals(p.getLastName())
+                && this.companyName.equals(p.getCompanyName()) && this.address.equals(p.getAddress())
+                && this.city.equals(p.getCity()) && this.province.equals(p.getProvince())
+                && this.postal.equals(p.getPostal()) && this.phone1.equals(p.getPhone1())
+                && this.phone2.equals(p.getPhone2()) && this.email.equals(p.getEmail()) && this.web.equals(p.getWeb()));
+            
     }
 
     
     //in theory allows to parse string to the person object
     public Person toPerson(String s){
         ArrayList<String> a = null;
-        String[] tokens = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+        String[] tokens = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
         for(String t : tokens) {
+            t.replaceAll("^\"|$", "");
             a.add(t);
         }
         Person p = new Person(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4), a.get(5),
         a.get(6), a.get(7), a.get(8), a.get(9), a.get(10));
         return p;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Person)) // ignore null or non-Person obj
-        {
-            return false;
-        }
-        if (this == o) // ignore itself
-        {
-            return true;
-        }
-        // compare all member fields if they are equals
-        Person p = (Person) o;
-        if (firstName.equals(p.getFirstName()) && lastName.equals(p.getLastName())
-                && companyName.equals(p.getLastName()) && address.equals(p.getLastName()) && city.equals(p.getLastName())
-                && province.equals(p.getLastName()) && postal.equals(p.getLastName()) && phone1.equals(p.getLastName())
-                && phone2.equals(p.getLastName()) && email.equals(p.getLastName()) && web.equals(p.getLastName())) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

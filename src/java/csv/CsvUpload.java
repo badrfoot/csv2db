@@ -1,8 +1,8 @@
 package csv;
 
 import java.io.*;
-import java.util.ArrayList;
-import javax.servlet.ServletException;
+import java.util.*;
+import javax.servlet.*;
 import javax.servlet.annotation.*;
 import javax.servlet.http.*;
 
@@ -14,49 +14,72 @@ public class CsvUpload extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //TODO: move all code to Csv2Database.readCsv and make it working
-        //Csv2Database.readCsv(new FileInputStream io);
+        //TODO: make it working
         
         response.setContentType("text/html");
         
         PrintWriter out = response.getWriter();
-        
+        ArrayList<Person> added = null;
+        ArrayList<Person> parsed = null;
         Part filePart = null;
         InputStream fileStream = null;
-        BufferedReader reader = null;
-
-        // container for records
-        ArrayList<String> lines = new ArrayList<String>();
-        
+        int parsedCount = 0;
+        int addedCount = 0;
+        Csv2Database db1 = null;
+        boolean connected = false;
         try
         {
             // get the file from request and create a file reader
             filePart = request.getPart("file");
             fileStream = filePart.getInputStream();
             
-            Csv2Database db = new Csv2Database();
+            /*creating instance of Csv2Db allows to use readCsv method
+            but also requires assignment of all necessary code to make it NOT empty*/
             
-            db.readCsv(fileStream);
+            //TODO make the thing to use added arraylist
+            db1 = new Csv2Database();
+            //db1.jdbc.connect("jdbc:mysql://localhost:3306/ejd", "root", "not4you");
+            connected = db1.jdbc.connect("jdbc:mysql://localhost:3306/ejd", "root", "not4you");
+            parsed = db1.readCsv(fileStream);
+            
+            fileStream.close();
+            
+            added = db1.addPersons(parsed);
+            
+            parsedCount = parsed.size();
+            addedCount = added.size();
+            request.setAttribute("parsedCount", parsedCount);
+            request.setAttribute("addedCount", addedCount);
+            request.setAttribute("added", added);
+            
+            RequestDispatcher rd = request.getRequestDispatcher("csvResult");
+            rd.forward(request, response);
+            
         }
         catch(Exception e)
         {
-            out.println("<p>" + e.getMessage() + "</p>");
+            out.println("<p>Exception: " + e.toString() + "</p>");
+            out.println("<p>Stack Trace: " + e.getStackTrace() + "</p>");
+            out.println("<p>Cause: " + e.getCause() + "</p>");
+            out.println("<p>Connected: " + connected + "</p>");
+            out.println("<p>parsedCount: " + parsedCount + "</p>");
+            out.println("<p>addedCount: " + addedCount + "</p>");
+            out.println("<p>Stream: " + filePart.getInputStream() + "</p>");
         }
         
-        // done with file stream, clean up
-        if(reader != null)      reader.close();
-        if(fileStream != null)  fileStream.close();
-
         // print output
         printHeader(out, "CSV Reader", "");
 
         // print body
-        int count = lines.size();
-        for(int i = 0; i < count; ++i)
+        int count = parsed.size();
+        System.out.println(count);
+        for(int i = 1; i < count; i++)
         {
             out.println("<div><span style='color:red;'>" + (i+1) + ":</span> " +
-                        lines.get(i) + "</div>");
+                        added.get(i) + "</div>");
         }
+            out.println("<div>" + addedCount + "</div>");
+            out.println("<div>" + parsedCount + "</div>");
         printFooter(out);
             
         }
@@ -84,25 +107,20 @@ public class CsvUpload extends HttpServlet {
         out.println("\n</body>\n</html>");
     }
     
-
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
     
     @Override
     public String getServletInfo() {
         return "Short description";
     }
-
 }
