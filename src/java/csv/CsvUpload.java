@@ -14,37 +14,39 @@ public class CsvUpload extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        //TODO: make it working
-        
         response.setContentType("text/html");
-        
         PrintWriter out = response.getWriter();
+        
         ArrayList<Person> added = null;
         ArrayList<Person> parsed = null;
         Part filePart = null;
         InputStream fileStream = null;
+        BufferedReader reader = null;
         int parsedCount = 0;
         int addedCount = 0;
+        
         Csv2Database db1 = null;
-        boolean connected = false;
+        
+        ArrayList<String> lines = new ArrayList<String>();
+        
         try
         {
             // get the file from request and create a file reader
             filePart = request.getPart("file");
             fileStream = filePart.getInputStream();
-            
+            reader = new BufferedReader(new InputStreamReader(fileStream));
             /*creating instance of Csv2Db allows to use readCsv method
             but also requires assignment of all necessary code to make it NOT empty*/
             
             //TODO make the thing to use added arraylist
             db1 = new Csv2Database();
-            //db1.jdbc.connect("jdbc:mysql://localhost:3306/ejd", "root", "not4you");
-            connected = db1.jdbc.connect("jdbc:mysql://localhost:3306/ejd", "root", "not4you");
             parsed = db1.readCsv(fileStream);
+            added = db1.addPersons(parsed);
             
+            if(reader != null)
+            reader.close();
             fileStream.close();
             
-            added = db1.addPersons(parsed);
             
             parsedCount = parsed.size();
             addedCount = added.size();
@@ -52,7 +54,7 @@ public class CsvUpload extends HttpServlet {
             request.setAttribute("addedCount", addedCount);
             request.setAttribute("added", added);
             
-            RequestDispatcher rd = request.getRequestDispatcher("csvResult");
+            RequestDispatcher rd = request.getRequestDispatcher("csvResult.jsp");
             rd.forward(request, response);
             
         }
@@ -61,7 +63,6 @@ public class CsvUpload extends HttpServlet {
             out.println("<p>Exception: " + e.toString() + "</p>");
             out.println("<p>Stack Trace: " + e.getStackTrace() + "</p>");
             out.println("<p>Cause: " + e.getCause() + "</p>");
-            out.println("<p>Connected: " + connected + "</p>");
             out.println("<p>parsedCount: " + parsedCount + "</p>");
             out.println("<p>addedCount: " + addedCount + "</p>");
             out.println("<p>Stream: " + filePart.getInputStream() + "</p>");
@@ -71,15 +72,12 @@ public class CsvUpload extends HttpServlet {
         printHeader(out, "CSV Reader", "");
 
         // print body
-        int count = parsed.size();
-        System.out.println(count);
+        int count = lines.size();
+        
         for(int i = 1; i < count; i++)
         {
-            out.println("<div><span style='color:red;'>" + (i+1) + ":</span> " +
-                        added.get(i) + "</div>");
+            out.println("<div>" + (i+1) + added.get(i) + "</div>");
         }
-            out.println("<div>" + addedCount + "</div>");
-            out.println("<div>" + parsedCount + "</div>");
         printFooter(out);
             
         }

@@ -1,7 +1,5 @@
 package csv;
 
-import java.util.*;
-
 public class Person {
 
     private String firstName, lastName, companyName, address, city, province, postal, phone1, phone2, email, web;
@@ -113,6 +111,7 @@ public class Person {
         this.web = web;
     }
 
+    @Override
     public boolean equals(Object o) {
         Person p = null;
         if (o instanceof Person) {
@@ -129,20 +128,5 @@ public class Person {
                 && this.city.equals(p.getCity()) && this.province.equals(p.getProvince())
                 && this.postal.equals(p.getPostal()) && this.phone1.equals(p.getPhone1())
                 && this.phone2.equals(p.getPhone2()) && this.email.equals(p.getEmail()) && this.web.equals(p.getWeb()));
-            
-    }
-
-    
-    //in theory allows to parse string to the person object
-    public Person toPerson(String s){
-        ArrayList<String> a = null;
-        String[] tokens = s.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-        for(String t : tokens) {
-            t.replaceAll("^\"|$", "");
-            a.add(t);
-        }
-        Person p = new Person(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4), a.get(5),
-        a.get(6), a.get(7), a.get(8), a.get(9), a.get(10));
-        return p;
     }
 }

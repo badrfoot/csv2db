@@ -33,29 +33,7 @@ public class JdbcHelper
     ///////////////////////////////////////////////////////////////////////////
     
     
-    public boolean connect(String url, String user, String password) {
-        try {
-            errorMessage = "";
-
-            // getConnection() requires 3 params: URL, user and password.
-            // DriverManager will load the JDBC driver automatically based on URL.
-            // NOTE: Tomcat requires Class.forName() to load driver properly
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(url, user, password);
-
-        } catch (SQLException e) {
-            errorMessage = e.getSQLState() + ": " + e.getMessage();
-            System.err.println(errorMessage);
-            return false;
-        } catch (Exception e) {
-            errorMessage = e.getMessage();
-            System.err.println(errorMessage);
-            return false;
-        }        
-        return true;
-    }
-    //commented for connection test
-    /*public void connect(String url, String user, String pass)
+    public void connect(String url, String user, String pass)
     {
         try
         {
@@ -80,7 +58,7 @@ public class JdbcHelper
             errorMessage = e.getMessage();
             e.printStackTrace();
         }
-    }*/
+    }
 
 
 
